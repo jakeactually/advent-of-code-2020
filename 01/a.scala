@@ -1,6 +1,6 @@
 import scala.io.Source
 
-object Day1A extends App {
+object Main extends App {
     val lines = Source.fromFile("input.txt").getLines().toList
     
     for (List(a, b) <- lines.combinations(2)) {

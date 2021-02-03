@@ -1,6 +1,6 @@
 import scala.io.Source
 
-object Day1A extends App {
+object Main extends App {
     val lines = Source.fromFile("input.txt").getLines().toList
     val grid = lines.map(_.split("").toList)
     val (h, w) = (grid.size, grid(0).size)

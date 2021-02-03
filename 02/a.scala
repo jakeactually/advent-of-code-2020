@@ -1,6 +1,6 @@
 import scala.io.Source
 
-object Day1A extends App {
+object Main extends App {
     val lines = Source.fromFile("input.txt").getLines().toList
     val regex = raw"(\d{1,2})-(\d{1,2}) (\w): (\w+)".r
     var count = 0
