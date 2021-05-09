@@ -37,14 +37,11 @@ object Main extends App {
     }
     .sortBy(_._2.size)
 
-    // data.foreach(println)
-
     val result = for {
         i <- 0 until data.size - 1
-        field = (data(i)._1, (data(i + 1)._2.toSet & data(i)._2.toSet).toList)
-        // if (field._1.contains("departure"))
-    } yield field // myTicket(field._2.head)
+        field = (data(i + 1)._1, (data(i + 1)._2.toSet -- data(i)._2.toSet).toList)
+        if (field._1.contains("departure"))
+    } yield myTicket(field._2.head)
 
-    // println(result.map(_.toLong).product)
-    result.foreach(println)
+    println(result.map(_.toLong).product)
 }
