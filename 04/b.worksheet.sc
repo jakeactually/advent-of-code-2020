@@ -1,6 +1,6 @@
 import scala.io.Source
 
-object Util {
+object Util:
     val height = "^(\\d+)(cm|in)$".r
     val validations: Map[String, String => Boolean] = Map(
         "byr" -> byr,
@@ -28,7 +28,6 @@ object Util {
     def hcl(s:String): Boolean = "^#[0-9a-fA-F]{6}$".r.findFirstIn(s).isDefined
     def ecl(s:String): Boolean = List("amb", "blu", "brn", "gry", "grn", "hzl", "oth").contains(s)
     def pid(s:String): Boolean = "^[0-9]{9}$".r.findFirstIn(s).isDefined
-}
 
 val text = Source.fromFile("04/input.txt").mkString
 
