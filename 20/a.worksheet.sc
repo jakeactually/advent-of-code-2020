@@ -11,16 +11,6 @@ extension (block: Grid)
     def four: Grid = List(top, bottom, left, right)
     def all: Grid = four ++ four.map(_.reverse)
     def compat(other: Grid): Boolean = (all.toSet & other.all.toSet).size > 0
-    def variants = List(
-        block,
-        block.reverse,
-        block.map(_.reverse),
-        block.reverse.map(_.reverse),
-        block.transpose,
-        block.transpose.reverse,
-        block.transpose.map(_.reverse),
-        block.transpose.reverse.map(_.reverse)
-    )
 
 val blocks = Source
     .fromFile("20/input.txt")
