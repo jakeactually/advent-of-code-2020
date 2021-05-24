@@ -30,3 +30,4 @@ yield
     (k1, k2)
 
 pairs.groupBy(_._1).filter(_._2.size == 2).keys.map(_.toLong).product
+pairs.groupBy(_._1).filter(_._2.size == 2).keys
