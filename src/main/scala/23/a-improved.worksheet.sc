@@ -66,11 +66,11 @@ class CircularList(numbers: List[Int]) {
     val afterThird = thirdOfThree.right
 
     var current = from.value
-    current = if current == 1 then 1000000 else current - 1
+    current = if current == 1 then 9 else current - 1
     while (
       current == firstOfThree.value || current == secondOfThree.value || current == thirdOfThree.value
     ) {
-      current = if current == 1 then 1000000 else current - 1
+      current = if current == 1 then 9 else current - 1
     }
     current
   }
@@ -82,8 +82,7 @@ class CircularList(numbers: List[Int]) {
 }
 
 // Numbers to populate the circular list
-val numbers =
-  List(7, 1, 2, 6, 4, 3, 5, 8, 9) ++ LazyList.from(10).take(1000000 - 9)
+val numbers = List(7,1,2,6,4,3,5,8,9)
 
 // Create and populate the circular list
 val circularList = new CircularList(numbers)
@@ -94,10 +93,10 @@ var fromNode =
     .getNode(numbers(0))
     .get // Move the 3 nodes to the right of node with value 6
 
-for (_ <- 1 to 10000000) do
+for (_ <- 1 to 100) do
   val next = circularList.nextNumber(fromNode)
   val toNode = circularList.getNode(next).get
   circularList.moveNextThreeNodes(fromNode, toNode)
   fromNode = fromNode.right
 
-circularList.depth(circularList.getNode(1).get, 3).map(_.toLong).product
+circularList.depth(circularList.getNode(1).get, 9)
