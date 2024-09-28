@@ -1,38 +1,43 @@
 import scala.util.parsing.combinator.RegexParsers
+import scala.io.Source
+
+enum Exp:
+  case Number(a: Long)
+  case Add(a: Exp, b: Exp)
+  case Multiply(a: Exp, b: Exp)
 
 object ExpressionParser extends RegexParsers {
-  def number: Parser[Double] = """\d+(\.\d*)?""".r ^^ { _.toDouble }
+  def number: Parser[Exp] = """\d+(\.\d*)?""".r ^^ { x => Exp.Number(x.toLong) }
 
-  def factor: Parser[Double] = number | "(" ~> expr <~ ")"
+  def factor: Parser[Exp] = number | "(" ~> expr <~ ")"
 
-  def term: Parser[Double] = factor ~ rep("*" ~ factor | "/" ~ factor) ^^ {
-    case num ~ list =>
-      list.foldLeft(num) {
-        case (x, "*" ~ y) => x * y
-        case (x, "/" ~ y) => x / y
-      }
+  def term: Parser[Exp] = factor ~ rep("+" ~ factor) ^^ { case num ~ list =>
+    list.foldLeft(num) { case (x, "+" ~ y) =>
+      Exp.Add(x, y)
+    }
   }
 
-  def expr: Parser[Double] = term ~ rep("+" ~ term | "-" ~ term) ^^ {
-    case num ~ list =>
-      list.foldLeft(num) {
-        case (x, "+" ~ y) => x + y
-        case (x, "-" ~ y) => x - y
-      }
+  def expr: Parser[Exp] = term ~ rep("*" ~ term) ^^ { case num ~ list =>
+    list.foldLeft(num) { case (x, "*" ~ y) =>
+      Exp.Multiply(x, y)
+    }
   }
 
-  def parseExpression(expression: String): Either[String, Double] =
+  def parseExpression(expression: String): Exp =
     parseAll(expr, expression) match {
-      case Success(result, _) => Right(result)
-      case Failure(msg, _)    => Left(s"Parsing failed: $msg")
-      case Error(msg, _)      => Left(s"Error: $msg")
+      case Success(result, _) => result
     }
 }
 
-val expression = "1 + 1 + (2 * 2) + 1 + 1"
-val result = ExpressionParser.parseExpression(expression)
-
-result match {
-  case Right(value) => println(s"Result: $value")
-  case Left(error)  => println(s"Error: $error")
+def evaluate(expr: Exp): Long = expr match {
+  case Exp.Number(value)         => value
+  case Exp.Add(left, right)      => evaluate(left) + evaluate(right)
+  case Exp.Multiply(left, right) => evaluate(left) * evaluate(right)
 }
+
+Source
+  .fromFile("src/main/scala/18/input.txt")
+  .getLines()
+  .toList
+  .map(evaluate.compose(ExpressionParser.parseExpression))
+  .sum
