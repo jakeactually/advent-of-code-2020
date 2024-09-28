@@ -53,7 +53,7 @@ def solveMany(tokens: List[Token]): Long = tokens match
     case _ => 0
 
 val values: List[Long] = Source
-    .fromFile("18/input.txt")
+    .fromFile("src/main/scala/18/input.txt")
     .getLines()
     .toList
     .map(line => solveMany(getMany(List(), line.toList)._1))
